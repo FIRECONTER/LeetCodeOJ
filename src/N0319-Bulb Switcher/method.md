@@ -16,7 +16,7 @@ So you should return 1, because there is only one bulb is on.
 ```
 # Analyse
 判断完全平方数
-## Methond one: stack push and pop $O(n)$
+## Method one: stack push and pop $O(n)$
 JavaScript代码如下:
 ```JavaScript
 var bulbSwitch = function a(n) {
