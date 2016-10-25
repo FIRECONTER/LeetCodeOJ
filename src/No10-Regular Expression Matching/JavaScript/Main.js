@@ -1,76 +1,26 @@
-/**
- * @param {string} s
- * @param {string} p
- * @return {boolean}
- */
 var isMatch = function(s, p) {
-    if(!s||!p) return false;
-    var ind1 = 0;
-    var ind2 = 0;
-    while(ind1!=s.length&&ind2!=p.length){
-        if(s[ind1]==p[ind2]){
-            if(p[ind2+1]=='*')
-            {
-                var temp = s[ind1];
-                do{
-                    ind2++;
-                }while(p[ind2]=='*'&&ind2<p.length);
-                
-                if(ind2!=p.length){
-                    //has some char at the end of the string
-                    while(s[ind1]==temp&&ind1<s.length-p.length+ind2){
-                        ind1++;
-                    }
-                    
-                }
-                else
-                {
-                    
-                    do{
-                        ind1++;
-                    }while(s[ind1]==temp&&ind1<s.length);
-                }
-                
-            }
-            else {
-                ind1++;
-                ind2++;
-            }
+    var ids = 0;
+    var idp = 0;
+    function isMatch(ids,idp){
+        if(idp==p.length) return ids==s.length;
+        if(p[idp+1]!='*'){
+            //the next char is not *
+            if(p[idp]!='.'&&p[idp]!=s[ids]) return false;
+            else return isMatch(ids+1,idp+1);
         }
         else{
-            if(p[ind2]=='*') return false;
-            else if(p[ind2]=='.'){
-                if(ind2+1<p.length&&p[ind2+1]=='*'){
-                    do{
-                        ind1++;
-                        ind2++;
-                    }while(p[ind2]=='*'&&ind2<p.length)
-                }
-                else
-                {
-                    ind1++;
-                    ind2++;
-                }
-            }
+            //the next char is *
+            if(isMatch(ids,idp+2)) return true;//this char means nothing
             else{
-                if(ind2+1<p.length&&p[ind2+1]=='*'){
-                    
-                    do{
-                        ind2++;
-                    }while(p[ind2]=='*'&&ind2<p.length)
+                var len = s.length-ids;
+                for(var i=0;i<len;i++){
+                    if(p[idp]!='.'&&p[idp]!=s[ids+i]) return false;
+                    if(isMatch(ids+i+1,idp+2)) return true;
                 }
-                else return false;
-                
+                return false;
             }
         }
     }
-   if(ind2==p.length&&ind1==s.length) return true;
-   else return false;
-    
+    if(p[0]=='*') return false;
+    else return isMatch(ids,idp);
 };
-
-/**test**/
-var t = require();
-//get the string;
-
-console.log(isMatch(s,p));
